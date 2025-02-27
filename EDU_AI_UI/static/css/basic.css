@@ -1,0 +1,29 @@
+/* Import Poppins Font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Define root variables for light theme */
+:root {
+  --background-color: #f5f7fb; /* Matches your basic.css body background */
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+  --background-color: #15223A; /* Your requested dark theme background */
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif !important; /* Apply Poppins globally */
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
