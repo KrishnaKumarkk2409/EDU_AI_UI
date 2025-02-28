@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/edulogo.svg') }}">
+  <title>Edu.ai Profile</title>
+  <link rel="stylesheet" href="static/css/basic.css" />
+  <link rel="stylesheet" href="static/css/sidebar.css" />
+  <link rel="stylesheet" href="static/css/profile.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="profile-container">
+    <!-- Include Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      {% include 'dashboard/sidebar.html' %}
+    </aside>
+
+    <main class="profile-content">
+      <div class="profile-header">
+        <div class="profile-image-container">
+          <img id="profile-img" src="{{ session.get('profile_image') or url_for('static', filename='images/profile.svg') }}" alt="Profile Picture" />
+          <input type="file" id="file-input" style="display:none" onchange="previewImage(event)" />
+          <label for="file-input" class="pen-icon">
+              <img src="/static/images/pen.svg" alt="Edit" />
+          </label>
+        </div>
+
+        <div class="profile-details">
+          <h2><span class="my-text">My</span> <span class="profile-text">Profile</span></h2>
+          <div class="tabs">
+            <button class="tab-button active" id="general-details-btn">General Details</button>
+            <button class="tab-button" id="settings-btn">Settings</button>
+          </div>
+
+          <div class="tab-content active" id="general-details-content">
+            <form>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="first-name">First Name</label>
+                  <input type="text" id="first-name" name="first-name"
+                    value="{{ session.get('user_name', 'First name') }}" />
+                </div>
+                <div class="form-group">
+                  <label for="last-name">Last Name</label>
+                  <input type="text" id="last-name" name="last-name" value="{{ session.get('last_name', "Last name") }}" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" value="{{ session.get('email', "info@example.com") }}" />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="text" id="phone" name="phone" value="5154656985" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="linkedin">Google ID</label>
+                  <input type="linkedin" id="linkedin" name="linkedin" value="{{ session.get('google_id', "info@example.com") }}" />
+                </div>
+                <div class="form-group">
+                  <label for="role">Role</label>
+                  <select id="role" name="role">
+                    <option value="" disabled selected>Select Profession</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                    <option value="working-professional">Working professional</option>
+                    <option value="researcher">Researcher</option>
+                    <option value="entrepreneur">Entrepreneur</option>
+                    <option value="sales-marketing">Sales/Marketing</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="update-btn">Update</button>
+            </form>
+          </div>
+
+          <div class="tab-content hidden" id="settings-content">
+            <h3>Change Password</h3>
+            <form>
+              <div class="form-group">
+                <label for="current-password">Current Password</label>
+                <input type="password" id="current-password" name="current-password" />
+              </div>
+              <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" name="new-password" />
+              </div>
+              <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" />
+              </div>
+              <button type="submit" class="update-btn">Update Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="static/js/profile.js"></script>
+</body>
+
+</html>

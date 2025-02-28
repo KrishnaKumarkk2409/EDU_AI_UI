@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/edulogo.svg') }}">
+  <title>Edu.ai Calendar - {{ month_name }} {{ year }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/basic.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar (Fixed) -->
+    <aside class="sidebar" id="sidebar">
+      {% include 'dashboard/sidebar.html' %}
+    </aside>
+
+    <!-- Main Calendar Section -->
+    <main class="calendar-container">
+      <div class="header">
+        <h1>{{ month_name }} {{ year }}</h1>
+      </div>
+      <div class="calendar-wrapper">
+        <a href="{{ url_for('calendar', year=prev_year, month=prev_month) }}" class="nav-link-arrow">←</a>
+        <div class="calendar">
+          <table>
+            <tr>
+              <th>Sun</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+            </tr>
+            {% for week in month_days %}
+            <tr>
+              {% for day in week %}
+              <td class="{{ 'today' if day == today.day and month == today.month and year == today.year else '' }}">
+                {% if day > 0 %}
+                  <div class="day-number">{{ day }}</div>
+                  {% if events_by_day[day] %}
+                    <ul class="events-list">
+                      {% for event in events_by_day[day] %}
+                        <li class="event-item" title="{{ event.content }}">{{ event.event }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        <a href="{{ url_for('calendar', year=next_year, month=next_month) }}" class="nav-link-arrow">→</a>
+      </div>
+      
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+:root {
+  --chat-bg: white;
+  --text-primary: #313B4E;
+  --user-msg-bg: #DAE7FF;
+  --ai-msg-bg: #EDEDED;
+  --accent-color: #2563eb;
+  --text-secondary: #64748b;
+  --input-bg: white;
+}
+
+[data-theme="dark"] {
+  --chat-bg: #1a202c;
+  --text-primary: #FFFFFF;
+  --user-msg-bg: #2b6cb0;
+  --ai-msg-bg: #2d3748;
+  --text-secondary: #94a3b8;
+  --input-bg: #2d3748;
+}
+
+.learning-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--chat-bg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  height: 100vh;
+  padding: 20px;
+  overflow: hidden;
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-primary);
+}
+
+/* Loading Container Styles */
+.loading-container {
+  display: block;
+  width: 80%;
+  height: 80%;
+  position: absolute;
+  top: 60px;
+  left: 100px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .loading-container {
+  background-color: rgba(26, 32, 44, 0.8);
+}
+
+.lottie-animation {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .learning-container {
+    margin-left: 0;
+    padding-bottom: 80px; /* Space for bottom bar */
+  }
+
+  .loading-container {
+    width: 90%;
+    height: 70%;
+    top: 50px;
+    left: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-container {
+    width: 95%;
+    height: 60%;
+    top: 40px;
+    left: 10px;
+  }
+}

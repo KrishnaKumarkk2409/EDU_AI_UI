@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/edulogo.svg') }}">
+    <title>Edu.ai Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/home.css" />
+    <link rel="stylesheet" href="static/css/sidebar.css" />
+    <link rel="stylesheet" href="static/css/basic.css" />
+    <link rel="stylesheet" href="static/css/login_signup.css" />
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <!-- Lottie Player CDN -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+
+<body>
+    <!-- Main Container for Sidebar and Content -->
+    <div class="main-container">
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Sidebar (Fixed) -->
+        <aside class="sidebar" id="sidebar">
+            {% include 'dashboard/sidebar.html' %}
+        </aside>
+
+        <!-- Main Content (Scrollable) -->
+        <div class="content-wrapper">
+            <!-- Location Container (Right side) -->
+            <div class="location-container" id="location-container">
+                <div class="location">
+                    <span>🌍</span>
+                    <span id="user-location">Loading...</span>
+                    <a href="{{ url_for('calendar') }}">
+                        <img src="{{ url_for('static', filename='images/calendar.svg') }}" alt="Calendar" class="calendar-icon" 
+                             data-light-src="{{ url_for('static', filename='images/calendar.svg') }}"
+                             data-dark-src="{{ url_for('static', filename='images/whitecalendar.svg') }}" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="header">
+                    <div class="hot-news-section">
+                        <h1 class="hot">Hot</h1>
+                        <h1 class="news">News</h1>
+                    </div>
+                </div>
+
+                <!-- Swiper Slider for News Articles -->
+                <div class="swiper-container">
+                    <div class="swiper-wrapper" id="news-slider">
+                        <!-- Skeleton slides as placeholders -->
+                        <div class="swiper-slide skeleton-slide">
+                            <div class="news-card">
+                                <div class="skeleton skeleton-image"></div>
+                                <div class="news-content">
+                                    <div class="skeleton skeleton-date"></div>
+                                    <div class="skeleton skeleton-title"></div>
+                                    <div class="skeleton skeleton-author"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Banner Slider -->
+                    <div class="slider-container">
+                        <div class="slider-banner">
+                            <div class="slide active">
+                                <img src="static/images/banner.svg" alt="Online Education">
+                            </div>
+                            <div class="slide">
+                                <img src="static/images/banner2.svg" alt="Study Materials">
+                            </div>
+                            <div class="slide">
+                                <img src="static/images/banner3.svg" alt="Learning Platform">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dots Navigation -->
+                    <div class="banner-dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+
+                    <!-- Popular Courses Section -->
+                    <div class="courses-section">
+                        <div class="section-header">
+                            <h2>Our Popular <span class="highlight">Courses</span>
+                                <span class="emoji"><img src="static/images/cap.svg" alt=""></span>
+                            </h2>
+                            <div class="book-icon"><img src="static/images/book.svg" alt="Book SVG"></div>
+                        </div>
+                        <div class="course-grid">
+                            <div class="course-card">
+                                <div class="course-info">
+                                    <div class="course-title">
+                                        <div class="blue-line"></div>
+                                        Current Affairs
+                                    </div>
+                                    <p class="course-description">
+                                        The US Federal Reserve has decided to keep interest rates unchanged in its first
+                                        major decision...
+                                    </p>
+                                </div>
+                                <img src="static/images/ca.svg" alt="Current Affairs" class="course-image">
+                            </div>
+                            <div class="course-card" onclick="openGeneralKnowledgePage()">
+                                <div class="course-info">
+                                    <div class="course-title">
+                                        <div class="blue-line"></div>
+                                        General Knowledge
+                                    </div>
+                                    <p class="course-description">
+                                        The US Federal Reserve has decided to keep interest rates unchanged in its first
+                                        major decision...
+                                    </p>
+                                </div>
+                                <img src="static/images/gk1.svg" alt="Current Affairs" class="course-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================== LOGIN MODAL ================== -->
+        <div id="loginModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-button" id="closeLoginModal">×</span>
+                <h2 class="login-title">Login</h2>
+                <div class="login-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            <p>{{ message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('login') }}" id="loginForm">
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Email" class="login-input" required />
+                            <span class="error-message" id="login-email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" placeholder="Password" class="login-input"
+                                required />
+                            <span class="error-message" id="login-password-error"></span>
+                        </div>
+                        <button type="submit" class="login-button">Login</button>
+                    </form>
+
+                    <p class="signup-link">
+                        Don’t have an account? <a href="#" id="openSignupModalLink">Sign Up</a>
+                    </p>
+
+                    <div class="divider">OR LOGIN WITH</div>
+                    <div class="social-login">
+                        <a href="{{ url_for('google_login') }}" class="social-button">
+                            <img src="/static/images/google.svg" alt="Google">
+                        </a>
+                        <a href="{{ url_for('linkedin_login') }}" class="social-button">
+                            <img src="/static/images/in.svg" alt="LinkedIn">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================== SIGN UP MODAL ================== -->
+        <div id="signupModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-button" id="closeSignupModal">×</span>
+                <h2 class="login-title">Sign Up</h2>
+                <div class="login-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            <p>{{ message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('signup') }}" id="signupForm">
+                        <div class="form-group">
+                            <input type="text" name="first_name" placeholder="First Name" class="login-input"
+                                required />
+                            <span class="error-message" id="signup-first-name-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="last_name" placeholder="Last Name" class="login-input" required />
+                            <span class="error-message" id="signup-last-name-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Email" class="login-input" required />
+                            <span class="error-message" id="signup-email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="phone" placeholder="Phone Number" class="login-input" required />
+                            <span class="error-message" id="signup-phone-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" placeholder="Password" class="login-input"
+                                required />
+                            <span class="error-message" id="signup-password-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="confirm_password" placeholder="Confirm Password"
+                                class="login-input" required />
+                            <span class="error-message" id="signup-confirm-password-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="dob" placeholder="Date of Birth" class="login-input" required />
+                            <span class="error-message" id="signup-dob-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <select name="profession" class="login-input" required>
+                                <option value="" disabled selected>Select Profession</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="student">Student</option>
+                                <option value="working-professional">Working professional</option>
+                                <option value="researcher">Researcher</option>
+                                <option value="entrepreneur">Entrepreneur</option>
+                                <option value="sales-marketing">Sales/Marketing</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="error-message" id="signup-profession-error"></span>
+                        </div>
+                        <button type="submit" class="login-button">Sign Up</button>
+                    </form>
+
+                    <p class="signup-link">
+                        Already have an account? <a href="#" id="openLoginModalLink">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Missing Information Modal -->
+        <div id="missingInfoModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-button" id="closeMissingInfoModal">×</span>
+                <h2 class="login-title">Complete Your Profile</h2>
+                <div class="login-body">
+                    <form method="POST" action="{{ url_for('update_profile') }}" id="missingInfoForm">
+                        <div class="form-group">
+                            <input type="text" name="country" placeholder="Country" class="login-input" required />
+                            <span class="error-message" id="missing-country-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="state" placeholder="State" class="login-input" required />
+                            <span class="error-message" id="missing-state-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="city" placeholder="City" class="login-input" required />
+                            <span class="error-message" id="missing-city-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="phone_number" placeholder="Phone Number" class="login-input"
+                                required />
+                            <span class="error-message" id="missing-phone-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="dob" placeholder="Date of Birth" class="login-input" required />
+                            <span class="error-message" id="missing-dob-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <select name="profession" class="login-input" required>
+                                <option value="" disabled selected>Select Profession</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="student">Student</option>
+                                <option value="working-professional">Working professional</option>
+                                <option value="researcher">Researcher</option>
+                                <option value="entrepreneur">Entrepreneur</option>
+                                <option value="sales-marketing">Sales/Marketing</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="error-message" id="missing-profession-error"></span>
+                        </div>
+                        <button type="submit" class="login-button">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Swiper JS -->
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <!-- External JS File -->
+        <script src="static/js/home.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!-- sidebar.html -->
+<aside class="sidebar">
+  <!-- <div class="logo">Edu.<span class="highlight">ai</span></div> -->
+  <img src="{{ url_for('static', filename='images/edulogo.svg') }}" 
+       alt="Edu.ai Logo" 
+       class="logo nav-icon" 
+       data-light-src="{{ url_for('static', filename='images/edulogo.svg') }}" 
+       data-dark-src="{{ url_for('static', filename='images/whitelogo.svg') }}" />
+  
+  <nav>
+    <ul>
+      <li class="{{ 'active' if active_page == 'home' else '' }}">
+        <a href="{{ url_for('home') }}" class="nav-link" id="home-link">
+          <img src="{{ url_for('static', filename='images/home.svg') }}" 
+               data-light-src="{{ url_for('static', filename='images/home.svg' if active_page != 'home' else 'images/homeblue.svg') }}"
+               data-dark-src="{{ url_for('static', filename='images/whitehome.svg') }}"
+               alt="Home" class="nav-icon" />
+          Home
+        </a>
+      </li>
+      
+      {% if not session.get('logged_in', False) %}
+        <li>
+          <a href="#" class="nav-link" id="login-btn">
+            <img src="{{ url_for('static', filename='images/login.svg') }}" 
+                 data-light-src="{{ url_for('static', filename='images/login.svg') }}"
+                 data-dark-src="{{ url_for('static', filename='images/whitelogin.svg') }}"
+                 alt="Login" class="nav-icon" />
+            Login
+          </a>
+        </li>
+      {% else %}
+        <li class="{{ 'active' if active_page == 'chat' else '' }}">
+          <a href="{{ url_for('chat') }}" class="nav-link" id="ai-link">
+            <img src="{{ url_for('static', filename='images/aib.svg') }}" 
+                 data-light-src="{{ url_for('static', filename='images/aib.svg' if active_page != 'chat' else 'images/aiblue.svg') }}"
+                 data-dark-src="{{ url_for('static', filename='images/whiteai.svg') }}"
+                 alt="Your_AI" class="nav-icon" />
+            Your AI
+          </a>
+        </li>
+        <li class="{{ 'active' if active_page == 'learning' else '' }}">
+          <a href="{{ url_for('learning') }}" class="nav-link" id="learning-link">
+            <img src="{{ url_for('static', filename='images/learning.svg') }}" 
+                 data-light-src="{{ url_for('static', filename='images/learning.svg' if active_page != 'learning' else 'images/learningblue.svg') }}"
+                 data-dark-src="{{ url_for('static', filename='images/whitelearning.svg') }}"
+                 alt="Learning" class="nav-icon" />
+            My Learning
+          </a>
+        </li>
+        <li class="{{ 'active' if active_page == 'profile' else '' }}">
+          <a href="{{ url_for('profile') }}" class="nav-link" id="profile-link">
+            <img src="{{ url_for('static', filename='images/profile.svg') }}"
+            data-light-src="{{ url_for('static', filename='images/profile.svg' if active_page != 'profile' else 'images/profileblue.svg') }}"
+            data-dark-src="{{ url_for('static', filename='images/whiteprofile.svg') }}"
+            alt="Profile" class="nav-icon" />
+            Profile
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  {% if session.get('logged_in', False) %}
+  <!-- Bottom section only for logged-in users -->
+  <div class="bottom-section">
+    <div class="theme-toggle">
+      <span>Light</span>
+      <label class="switch">
+        <input type="checkbox" />
+        <span class="slider"></span>
+      </label>
+      <span>Dark</span>
+    </div>
+    <div class="blue-line-bar"></div>
+    <div class="user-profile">
+      <img src="{{ session.get('profile_image') or url_for('static', filename='images/user.svg') }}" 
+           alt="User Profile" />
+      <span>{{ session.get('user_name') }} {{ session.get('last_name') }}</span>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+  {% endif %}
+</aside>
